@@ -11,13 +11,13 @@ const app = express();
 const server = new ApolloServer({ 
     typeDefs, 
     resolvers,
-    cache: "bounded" // Prevents DoS attacks from unbounded cache usage
+    cache: "bounded"  // ✅ Fix Apollo security warning
 });
 
 server.start().then(() => {
     server.applyMiddleware({ app });
 
-    // ✅ Use Render's dynamic port, default to 4000 if not set
+    // ✅ Use Render's PORT environment variable, default to 4000 for local testing
     const PORT = process.env.PORT || 4000;
     app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}/graphql`));
 });
