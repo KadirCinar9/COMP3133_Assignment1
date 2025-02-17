@@ -8,9 +8,16 @@ require('dotenv').config();
 connectDB();
 
 const app = express();
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ 
+    typeDefs, 
+    resolvers,
+    cache: "bounded" // Prevents DoS attacks from unbounded cache usage
+});
 
 server.start().then(() => {
     server.applyMiddleware({ app });
-    app.listen(4000, () => console.log('Server running on http://localhost:4000/graphql'));
+
+    // ✅ Use Render's dynamic port, default to 4000 if not set
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}/graphql`));
 });
